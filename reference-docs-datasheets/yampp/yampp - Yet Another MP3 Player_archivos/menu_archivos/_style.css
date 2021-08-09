@@ -1,0 +1,105 @@
+BODY {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+P {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+UL {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+OL {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+LI {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+TABLE {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+H1 {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+H2 {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+H3 {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+H4 {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+H5 {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+H6 {
+	COLOR: #ffffff; FONT-FAMILY: Verdana,Tahoma,Arial,Helvetica
+}
+BODY {
+	FONT-SIZE: xx-small
+}
+P {
+	FONT-SIZE: xx-small
+}
+UL {
+	FONT-SIZE: xx-small
+}
+OL {
+	FONT-SIZE: xx-small
+}
+LI {
+	FONT-SIZE: xx-small
+}
+TABLE {
+	FONT-SIZE: xx-small
+}
+A:link {
+	COLOR: #f0c000; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #a060a0; TEXT-DECORATION: none
+}
+A:active {
+	TEXT-DECORATION: underline
+}
+A:hover {
+	COLOR: #ff0505; TEXT-DECORATION: underline
+}
+H1 {
+	FONT-SIZE: 16pt; font-type: bold
+}
+H2 {
+	FONT-SIZE: 13pt
+}
+H3 {
+	FONT-SIZE: 12pt; font-type: bold
+}
+H4 {
+	FONT-SIZE: 10pt; font-type: bold
+}
+H5 {
+	FONT-SIZE: 8pt; font-type: bold
+}
+LI {
+	FONT-WEIGHT: bold; COLOR: #9b9bff
+}
+PRE {
+	FONT-SIZE: 8pt
+}
+TD.PRE {
+	FONT-SIZE: 8pt
+}
+.label {
+	FONT-WEIGHT: bold; FONT-SIZE: medium; COLOR: black; FONT-FAMILY: arial; TEXT-ALIGN: left
+}
+.labeltext {
+	FONT-WEIGHT: bold; FONT-SIZE: small; COLOR: black; FONT-FAMILY: arial; TEXT-ALIGN: left
+}
+.menu {
+	FONT-WEIGHT: bold; FONT-SIZE: x-small; FONT-FAMILY: arial
+}
+.menu2 {
+	FONT-WEIGHT: bold; FONT-SIZE: small; FONT-FAMILY: arial
+}
+.tabheader {
+	FONT-WEIGHT: bold; COLOR: #9b9bff
+}

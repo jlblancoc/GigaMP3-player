@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0036)http://www.myplace.nu/mp3/yampp2.htm -->
+<!-- default header --><HTML><HEAD><TITLE>yampp - yampp-2</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="yampp is Yet Another MP3 Player. Build one yourself." 
+name=Description>
+<META 
+content="build built homebuilt 3507 3550 MAS DAC decoder yampp mp3 player Atmel at90s8515 schematic hardware mega 103 mega103 Atmega mp-3 mpeg IDE ATA interface " 
+name=KeyWords><LINK href="yampp2_archivos/_style.css" rel=stylesheet>
+<META content="MSHTML 6.00.2800.1126" name=GENERATOR></HEAD>
+<BODY text=#ffffff vLink=#cc33cc aLink=#33ccff link=#66ffff bgProperties=fixed 
+bgColor=#000000 leftMargin=30 background=yampp2_archivos/yamppbg.gif><!-- end of header part -->
+<P><BR>
+<P>
+<H3><A name=yampp2>yampp-2</A></H3>The hardware in yampp-2 is pretty simple 
+actually. It's based around an Atmel <A 
+href="http://www.atmel.com/atmel/products/prod200.htm">At90S8515</A> CPU.<BR>It 
+is inspired from the <A href="http://hmpeg.virtualave.net/">HMpeg</A> player. 
+<P>However, their player had tons of unnecessary HW (just kidding ;-) 
+<BR>Anyway, I rationalized the HW a bit and left out a few of the chips they had 
+on their player. The leftout circuits are then compensated by software. 
+<P>
+<CENTER><A href="http://www.myplace.nu/mp3/images/yampp2_block_large.gif"><IMG 
+height=242 alt="Click for large version" 
+src="yampp2_archivos/yampp2_block_small.gif" width=389 border=0> 
+</A><BR><I><FONT size=-2>Block schematic for yampp-2. Click image for larger 
+version.<BR></FONT></I></CENTER>
+<P>The 8515, 74HC573 and 65256 SRAM, forms a "standard" block, common for Atmel 
+and 8051 circuits.<BR>The decoder and D/A converter is controlled via an 400 
+kbps I2C bus interface, and the MPEG data is streamed from the CPU to the 
+decoder through the 2 MHz SPI interface.<BR>An I2S bus carries data from the 
+decoder to the D/A converter.<BR>The LCD display is hooked onto the databus. R/W 
+and RS is controlled by 2 address lines and the enable line is controlled by an 
+I/O pin.<BR>What's unique here is the way the IDE interface is connected, 
+without the use of buffers or latches. Here's how it's controlled (this also to 
+some extent applies to the LCD) : The external RAM interface on the Atmel CPU 
+can be enabled/disabled in a register. When the interface is enabled, the RD and 
+WR signals as well as the data and address bus works "normally". When the 
+interface is disabled, the port pins (PORTA [D0-8], PORTC [A8-15], RD and WR), 
+will hold their assigned state from the port registers. Also, the ALE pin will 
+be disabled.<BR>This, together with the way the ALE pin handles address 
+latching, means that we can latch an address on A0-A7 by doing a dummy read at 
+the specified address. We can then disable the RAM interface, and the address 
+will still be held at A0-A7. But PORTA and PORTC is now available for I/O, and 
+we now use them as a 16-bit interface to the IDE interface.<BR>
+<P>
+<CENTER><IMG height=243 alt="" src="yampp2_archivos/yampp2_all.jpg" width=300 
+align=top border=0><BR><I><FONT size=-2>The yampp-2 hardware. CPU board, decoder 
+board and 2.5" harddisk.</FONT></I></CENTER>
+<P>
+<CENTER><IMG height=226 alt="" src="yampp2_archivos/yampp2_cpu.jpg" width=300 
+align=top border=0><BR><I><FONT size=-2>This is the yampp-2 CPU board with the 
+2*16 display mounted.<BR>The little metallic thingy at the lower left of the 
+display, is the IR receiver.</FONT></I></CENTER>
+<P>
+<CENTER><IMG height=227 alt="" src="yampp2_archivos/yampp2_cpu_nekkid.jpg" 
+width=300 align=top border=0><BR><I><FONT size=-2>The naked yampp-2 CPU board. 
+This is all that's needed. <BR>The MAX232 at the top right is actually 
+optional.</FONT></I></CENTER>
+<P>
+<CENTER><IMG height=214 alt="" src="yampp2_archivos/decoder_board.jpg" width=300 
+align=top border=0><BR><I><FONT size=-2>This is my MAS/DAC decoder board used 
+for testing all yampp's.</FONT></I></CENTER>
+<P><I>more to come</I> <FONT size=+4><BR><BR></FONT>
+<H3><A href="http://www.myplace.nu/mp3/main2.shtml" target=main>[Home]</A></H3>
+<P><!-- default footer --><!-- Page last updated script --><FONT 
+size=+4><BR><BR><BR></FONT><!-- counter -->
+<SCRIPT language=JavaScript type=text/javascript>
+<!--
+	document.write("<center><img src='/cgi-bin/nph-count2?width=5&link=" + document.URL + "'><BR>");
+// -->
+</SCRIPT>
+<!-- counter end -->
+<SCRIPT language=JavaScript type=text/javascript>
+<!--
+	var a;
+	a=new Date(document.lastModified);
+	lm_year=a.getYear();lm_year=((lm_year<1000)?((lm_year<70)?2000:1900):0)+lm_year;
+	lm_month=a.getMonth()+1;lm_month=((lm_month<10)?'0':'')+lm_month;
+	lm_day=a.getDate();lm_day=((lm_day<10)?'0':'')+lm_day;
+	document.write("<I><center><font size = -3 color = #6060c0>");
+	document.write("Site designed and maintained by Jesper Hansen. Page last updated " + lm_year+'-'+lm_month+'-'+lm_day);
+	document.write("</font></center></I>");
+// -->
+</SCRIPT>
+<!-- end of footer --></P></BODY></HTML>

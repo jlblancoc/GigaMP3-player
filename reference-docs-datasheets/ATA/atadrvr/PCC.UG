@@ -1,0 +1,171 @@
+
+              Using PC Cards with ATADEMO or ATACT
+
+                         by Hale Landis
+
+    Copyright 1997-2001 by Hale Landis -- All rights reserved
+
+                *** starting with ATADRVR 13A ***
+
+
+INTRODUCTION
+------------
+
+PC Card devices, also know as PCMCIA devices, are frequently used
+with notebook computers.  This user's guide describes how to set
+up and use a PC Card Adapter and a PC Card ATA device with the
+ATACT and ATADEMO programs.  A PC Card adapter is usually called
+a "PCIC chip".  This chip is found in most notebook computers and
+is usually compatible with the original Intel PCIC chip.  There
+are several PCMCIA adapters available for desktop systems.  These
+adapters are usually ISA bus cards with a PCIC chip and a PCMCIA
+socket.
+
+There are several types of PC Card ATA devices:  1.8 inch hard
+disks, flash memory disks and CFA devices.  The 1.8 inch hard
+disks have never been very popular and are not seen very
+frequently.  Flash memory ATA devices are frequently used with
+smaller notebook computers and with Personal Digital Assistant
+(PDA) devices.  CFA (CompactFlash Association) devices are the
+newest type of flash memory ATA devices.  CFA devices are very
+popular with the new digital cameras.
+
+PC Card ATA devices come several sizes known as Type I, Type II
+and Type III.  This type describes the physical size of the card.
+All types use the same electrical and programming interfaces.
+Flash memory devices are usually Type I or Type II while 1.8 inch
+hard disks are usually Type III.  All of these cards use a 68-pin
+PCMCIA connector.  A CFA device is actually a small PCMCIA card
+that uses a 50-pin version of the PCMCIA connector.  Most CFA
+devices come with a 50-pin to 68-pin "adapter card".  This card
+permits a CFA device to be plugged into a standard PCMCIA socket.
+
+ATACT and ATADEMO are able to configure an Intel compatible PCIC
+chip at I/O port addresses 3E0H-3E1H.  Only socket 0 is
+configured and only PC Card ATA mode is enabled.  All four PC
+Card ATA modes are supported:  Primary ATA, Secondary ATA,
+Contiguous I/O and Memory.  These programs do not access the CIS
+information and therefore does not know if the card being setup
+is or is not a PC Card ATA device.  These programs do not check
+for conflicts with other devices in the system.  The ATA host
+adapter and ATA device that is configured by these programs could
+overlay the same I/O port addresses and IRQ numbers that are in
+use by another device.
+
+Note that the equivalent of the INITPCC program is built into
+ATACT and ATADEMO.  Also see the documentation file INITPCC.UG.
+Also note that ATADRVR has supported all these PC Card ATA modes
+but this was not previously documented.
+
+
+PC CARD ATA COMMAND LINE OPTIONS -- ATACT and ATADEMO
+-----------------------------------------------------
+
+NOTE: See the ATADEMO.UG and ATACT.UG files for the complete
+description of the command line options of these programs.
+
+Both ATACT and ATADEMO support the PCCMODE, PCCIRQ and POLL
+command line options:
+
+   PCCMODE=PRImary   [ POLL ]
+
+   PCCMODE=SECondary [ POLL ]
+
+   PCCMODE=CONTIG     [ PCCIRQ=n | POLL ]
+
+   PCCMODE=CONTIG=xxx [ PCCIRQ=n | POLL ]
+
+   PCCMODE=MEMORY
+
+Options enclosed within brackets, [ and ], are optional.  The
+vertical bar, |, indicates a choice between the two options
+shown.  Each option is described below.
+
+PCCMODE=PRImary
+
+   Set up standard ATA Primary I/O at I/O port addresses
+   1F0H-1F7H and 3F6H with IRQ number 14.
+
+PCCMODE=SECondary
+
+   Set up standard ATA Secondary I/O at I/O port addresses
+   170H-177H and 376H with IRQ number 15.
+
+PCCMODE=CONTIG
+PCCMODE=CONTIG=xxx
+
+   Set up Contiguous I/O mode at I/O port addresses xx0H to xxFH.
+   If xxx is not specified, xxx defaults to 200H.  If xxx is
+   specified, xxx must be in the range 100H to 3F0H and the
+   rightmost digit of xxx must be a zero.
+
+PCCMODE=MEMORY
+
+   Set up Memory mode (the ATA I/O ports appear in a block of
+   memory addresses and are access as if they are memory locations).
+   INITPCC will report the segment:offset that was configured.
+   Memory mode forces polling mode.
+
+PCCIRQ=n
+
+   PCCIRQ is used to specify the IRQ to be used in Contiguous I/O
+   mode.  IRQ numbers 9, 10, 11, 12, 14 or 15 are supported.  The
+   default is 12.  PCCIRQ is ignored in Primary, Secondary and
+   Memory modes.
+
+POLL
+
+   Set up the PCIC for polling mode.  In polling mode no
+   IRQ is configured and the PCCIRQ option is ignored.
+   Memory mode forces polling mode.
+
+
+USING INITPCC WITH ATACT AND ATADEMO
+------------------------------------
+
+NOTE: See the INITPCC.UG file for the complete command line
+options of this program.
+
+When ATACT or ATADEMO is being used with a PC Card ATA device,
+the PCCMODE option should be used on the ATACT or ATADEMO command
+line as described above.  However, it is possible to use ATACT or
+ATADEMO on a PC Card ATA device without using the PCCMODE option.
+In this case, use the INITPCC program to set up Primary I/O or
+Secondary I/O mode prior to running ATACT or ATADEMO.
+
+
+EXAMPLES
+--------
+
+INITPCC PCCMODE=PRIMARY
+
+   Sets up ATA primary mode using IRQ 14.
+
+INITPCC PCCMODE=PRIMARY POLL
+
+   Sets up ATA primary mode with no IRQ.
+
+INITPCC PCCMODE=CONTIG=280 PCCIRQ=10
+
+   Set up contiguous I/O mode at I/O port addresses
+   280H-28FH using IRQ 10.
+
+INITPCC PCCMODE=CONTIG POLL
+
+   Set up contiguous I/O mode at I/O port addresses
+   200H-20FH with no IRQ.
+
+
+QUESTIONS OR PROBLEMS?
+----------------------
+
+Send your question(s) or problem description(s) to Hale Landis
+via email at this address:
+
+   hlandis@ata-atapi.com
+
+Visit Hale's web site:
+
+   www.ata-atapi.com
+
+/end/

@@ -1,0 +1,368 @@
+
+                    ------------------------
+                    ATADRVR HISTORY.TXT FILE
+                    ------------------------
+
+                         by Hale Landis
+
+Here is a brief list of the new and changed things in the last
+few versions of ATADRVR.
+
+                      -------------------
+                      ATADRVR CHANGE LIST
+                      -------------------
+
+Version 14F
+
+   New data transfer modes added for PCMCIA Memory mode. See the
+   pio_memory_dt_opt variable in ATAIO.H. Also see the ATADRVR.UG
+   documentation file.
+
+Version 14E
+
+   Many changes made in ATAIOTRC.C to prepare for 48-LBA support.
+
+Version 14D
+
+   Minor change to the trace message text formatting.
+
+Version 14B and 14C
+
+   BUG:  A bug in the pio_rep_outbyte() function (in ATAIOPIO.C)
+   was fixed.
+
+Version 14A
+
+   See versions 13A - 13P.
+
+Version 13P
+
+   NEW:  8-bit PIO data transfers are now supported.  The
+   pio_use_dword variable has been replaced by the pio_xfer_width
+   variable.  See the ATADRVR.UG file!
+
+Version 13N, 13O and 13P
+
+   No changes, see INITPCC below.
+
+Version 13M
+
+   - during ATAPI PIO data transfer commands the command
+     packet is no longer counted as a DRQ packet.  See
+     reg_cmd_info.drqPackets.
+   - ATAPI PACKET commands in DMA are now allowed to transfer up
+     to 131072 bytes.
+   - Checking for protocol errors immediately after the PACKET
+     (A0H) command is written to the Command register has been
+     changed. This change may cause some commands to ATAPI
+     devices to fail with an error.  See reg_atapi_delay_flag.
+
+Version 13L
+
+   The EXAMPLE1.C and EXAMPLE2.C programs have been updated to
+   show how the PCI DMA functions of ATADRVR are used.
+
+Version 13K
+
+   - text added to the low level trace to show the value of DEV
+     and LBA bits when the Drive/Head register is written.
+   - text added to the low level trace to show the value of the
+     nIEN bit when the Device Control register is written.
+
+Version 13J
+
+   The number of PIO DRQ packets is now counted during both ATA
+   and ATAPI PIO data transfer commands.  See
+   reg_cmd_info.drqPackets.
+
+Version 13I
+
+   A minor change was made to the text of one of the protocol
+   error message lines.
+
+Version 13H
+
+   The reg_packet() will now transfer more than 64K bytes for a
+   packet command.  See the variable reg_atapi_max_bytes.
+
+   The standard error message now includes a description of the
+   protocol error bits.
+
+Version 13G
+
+   The function pio_rep_outdword() was using the REP OUTSW
+   instruction.  The correct instruction is REP OUTSD.  This bug
+   was fixed.
+
+Version 13F
+
+   The following new variables where added so that the
+   caller of reg_packet() can control the values placed into the
+   Feature, Sector Count, Sector Number and Device/Head
+   registers:
+      reg_atapi_reg_fr
+      reg_atapi_reg_sc
+      reg_atapi_reg_sn
+      reg_atapi_reg_dh  (only bits 3,2,1,0 are used)
+   See the ATADRVR.UG file.
+
+Version 13E
+
+   ATAIOPCI.C was not setting all of the "reserved" bits in a PRD
+   entry to zero.  This has been fixed.
+
+Version 13D
+
+   - The documentation file ATADRVR.UG is new!
+   - PCI Bus Mastering DMA support has been added
+     (see source file ATAIOPCI.C)!
+   - The documentation files PIO.UG and DMA.UG have
+     been updated!
+   - The file ATAIODMA.C where renamed to ATAIOISA.C
+     (the ISA DMA function names are not changed).
+   - The make (*.MAK) files where updated.
+
+Version 13C
+
+   - The FLUSH CACHE command was added to ATAIO.H and to
+     ATAIOTRC.C.
+   - The CFA commands were addded to ATAIO.H and to
+     ATAIOTRC.C.
+
+Version 13B
+
+   - The ATA/ATAPI-4 has a new requirement that the host wait
+     following the transfer of last word of data in a PIO data
+     block before checking the status register.  This has been done
+     by calling the DELAY400NS macro at the appropriate times in
+     all the ATA and ATAPI command protocols.
+   - The slow data transfer option was added.  This option was
+     added to support several test programs (such as ATACT).
+
+Version 13A
+
+   This will look like a major change to the code but the actual
+   changes are few:
+
+   - all comments were converted to "//" style.
+   - support for ISA bus Mulitword DMA is new.  See new module
+     ataiodma.c.  Additions were made to the header files
+     to support this.  See the plain ASCII text file DMA.UG
+     which is also new with this version of ATADRVR.
+   - a few common functions were moved from ataioreg.c to a
+     new source module named ataiosub.c.  The functions are
+     used by both ataioreg.c and ataiodma.c.  Also see ataiopd.h.
+   - a "return ;" was changed to a "return NULL;" in ataiotrc.c
+     at the beginning of trc_err_dump2().
+   - The index bit (in the status register) is ignored in the
+     low level trace.  This keeps the low level trace from filling
+     up with status polling entries with the index bit going on
+     and off.  This is actually a bug fix since the code should
+     have worked this way all along, however, it has been years
+     since I've seen a drive that actually did anything with
+     this bit in the status register so I did not notice the
+     bug in the low level trace code (until I was testing with
+     an old drive).
+   - The definition of CB_ER_MCR in ATAIO.H was fixed -- it
+     has been wrong for several years -- I've never had to
+     use this bit of the ATA Error register so I never noticed
+     it was defined as the wrong bit!
+
+Version 12H
+
+   No changes to the driver code -- the only change was to the
+   example programs.
+
+Version 12G
+
+   A call to reg_atapi_delay() was added before the final status
+   check in reg_pio_data_in() because some ATAPI devices don't
+   handle status correctly at the end of the Identify Device
+   Packet (A1H) command.
+
+Version 12F
+
+   Fixed a hang (endless looping) in reg_packet() if the ATAPI
+   device attempted to transfer a data packet of zero length.
+   This added a new error/return code value (60) to
+   reg_packet().
+
+   Added code to support the Device Reset command in
+   reg_non_data().  This "command" should not generate
+   an interrupt so reg_non_data() must poll for BSY=0.
+
+Version 12E
+
+   Forced ns (the number of sectors actually transferred) to 1
+   for some commands (such as the Identify commands and R/W
+   Buffer).
+
+Version 12D
+
+   Forced multiCnt to be 1 for PIO In/Out commands other than
+   Read/Write Mulitple.
+
+   Very minor changes, mostly to comments and trace message text.
+
+Version 12C
+
+   In ATAIOTRC, the command history trace functions now trace the
+   ATAPI CDB when a Packet command is executed.
+
+   In ATAIOTRC, there are new functions trc_err_dump1() and
+   trc_err_dump2() that produce a standard I/O command error
+   message.
+
+                      --------------------
+                      EXAMPLE1 CHANGE LIST
+                      --------------------
+
+Here is a brief list of the new and changed things in the last
+few versions of the EXAMPLE1 program:
+
+Version 14A through 14E
+
+   No changes.
+
+Versions 13B through 13P
+
+   No changes.
+
+Version 13A
+
+   All comments were converted to "//" style.
+
+   Examples of ISA Multiword DMA where added.  See plain ASCII
+   text file DMA.UG which is also new with this version of
+   ATADRVR.
+
+Version 12H
+
+   An unterminated comment was fixed at about line 150.
+
+Version 12G
+
+   The program now accepts a command line parameter to specify
+   the device to run on: P0, P1, S0 or S1.
+
+   Some messages where added to show the program's progress.
+
+Version 12D, 12E and 12F
+
+   No changes.
+
+Version 12C
+
+   EXAMPLE.C has been rename to EXAMPLE1.C.  Calls to
+   trc_err_dump?(), trc_cht_dump?() and trc_llt_dump?() have been
+   included to show how to retrieve and display the standard I/O
+   error and trace messages.
+
+                      --------------------
+                      EXAMPLE2 CHANGE LIST
+                      --------------------
+
+Here is a brief list of the new and changed things in the last
+few versions of the EXAMPLE2 program:
+
+Version 14A through 14E
+
+   No changes.
+
+Versions 13B through 13P
+
+   No changes.
+
+Version 13A
+
+   All comments were converted to "//" style.
+
+   Examples of ISA Multiword DMA where added.  See plain ASCII
+   text file DMA.UG which is also new with this version of
+   ATADRVR.
+
+Version 12H
+
+   An unterminated comment was fixed at about line 150.
+
+Version 12G
+
+   The program now accepts a command line parameter to specify
+   the device to run on: P0, P1, S0 or S1.
+
+   Some messages where added to show the program's progress.
+
+Version 12E and 12F
+
+   No changes.
+
+Version 12D
+
+   The display of the CD-ROM TOC data has been fixed.
+
+Version 12C
+
+   EXAMPLE2.C is new and shows how to use the cmd_packet()
+   function to execute various ATAPI CD-ROM commands.  Calls to
+   trc_err_dump?(), trc_cht_dump?() and trc_llt_dump?() have been
+   included to show how to retrieve and display the standard I/O
+   error and trace messages.
+
+                      -------------------
+                      INITPCC CHANGE LIST
+                      -------------------
+
+Here is a brief list of the new and changed things in the last
+few versions of the INITPCC program:
+
+Version 14A through 14E
+
+   No changes.
+
+Version 13P
+
+   Debug messages improved.
+
+Version 13O
+
+   BUG: If SYSMEM= follows PCCMODE= on the command line then
+   PCCMODE=MEMORY is forced. This bug was fixed.
+
+Version 13N
+
+   NEW:  Command line options DUMPCIS, DUMPREGS and SYSMEM.  See
+   the INITPCC.UG documentation file.
+
+Versions 13F through 13M
+
+   No changes.
+
+Version 13E
+
+   A check added to make sure a PCIC is not asked to create a
+   duplicate primary or secondary ATA host adapter in the system.
+
+Versions 13B, 13C, 13D
+
+   No changes.
+
+Version 13A
+
+   INITPCC is a new program starting with Version 13A of ATADRVR.
+   Note that the source code for INITPCC is not available at this
+   time.
+
+
+QUESTIONS OR PROBLEMS?
+----------------------
+
+Send your question(s) or problem description(s) to Hale Landis
+via email at this address:
+
+   hlandis@ata-atapi.com
+
+Visit Hale's web site:
+
+   www.ata-atapi.com
+
+/end/
